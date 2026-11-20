@@ -70,7 +70,6 @@ public class PurpleSnake {
     // Reads one line from the user. If the input stream is closed
     // (Ctrl+D on Linux/WSL, Ctrl+Z then Enter on Windows)
     // the program exits cleanly instead of crashing.
-    
     private static String readLine(String prompt) {
         System.out.print(prompt);
 
