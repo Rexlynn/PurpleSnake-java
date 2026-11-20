@@ -26,11 +26,11 @@ A modular cybersecurity utility written in Java for educational demonstration an
 - **Compile:**
   ```bash
   javac PurpleSnake.java
-
+  ```
 - **Run:**
   ```bash
   java PurpleSnake
-
+  ```
 ## Disclaimer
 
 - Do not scan targets or networks without explicit permission.
