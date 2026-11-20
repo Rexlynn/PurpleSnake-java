@@ -1,6 +1,6 @@
 # PurpleSnake - Multi-Platform Security Toolkit (Java)
 
-A modular cybersecurity utility written in Java for educational demonstration and network security learning, designed to runs on Windows, Linux and WSL
+A modular cybersecurity utility written in Java for educational demonstration and network security learning, designed to run on Windows, Linux and WSL.
 
 ## Overview
 - PurpleSnake is a lightweight security toolkit demonstrating core networking and basic file obfuscation concepts in Java.
@@ -22,6 +22,9 @@ A modular cybersecurity utility written in Java for educational demonstration an
    - Runs OS-native commands (`ss`/`netstat` on Linux/WSL, `netstat` on Windows) via `ProcessBuilder`.
 
 ## Build & Run
+
+- **Version:**
+  - Requires JDK 9 or newer.
 
 - **Compile:**
   ```bash
