@@ -1,0 +1,73 @@
+classDiagram
+    direction TB
+
+    class ScanReport {
+        -target String
+        -scannedAt LocalDateTime
+        -results List~ScanResult~
+        +ScanReport(target String, scannedAt LocalDateTime, results List~ScanResult~)
+        +getTarget() String
+        +getScannedAt() LocalDateTime
+        +getResults() List~ScanResult~
+        +getResultsByState(state PortState) List~ScanResult~
+        +count(state PortState) int
+        +getSortedBy(c Comparator~ScanResult~) List~ScanResult~
+    }
+
+    class ScanResult {
+        <<immutable>>
+        -port int
+        -state PortState
+        +ScanResult(port int, state PortState)
+        +getPort() int
+        +getState() PortState
+        +isOpen() boolean
+        +getServiceName() String
+        +compareTo(other ScanResult) int
+    }
+
+    class PortState {
+        <<enumeration>>
+        OPEN
+        CLOSED
+        FILTERED
+    }
+
+    class PortRange {
+        <<immutable>>
+        +MIN_PORT int$
+        +MAX_PORT int$
+        -start int
+        -end int
+        +PortRange(start int, end int)
+        +getStart() int
+        +getEnd() int
+        +size() int
+    }
+
+    class ScanComparison {
+        <<immutable>>
+        -newlyOpened List~Integer~
+        -noLongerOpen List~Integer~
+        +getNewlyOpened() List~Integer~
+        +getNoLongerOpen() List~Integer~
+        +hasChanges() boolean
+    }
+
+    class ServiceCatalog {
+        <<utility>>
+        -SERVICES Map~Integer, String~$
+        +nameFor(port int) String$
+    }
+
+    class InvalidPortRangeException {
+        <<checked exception>>
+    }
+
+    ScanReport "1" *-- "0..*" ScanResult : owns
+    ScanResult "*" --> "1" PortState : has
+    ScanResult ..> ServiceCatalog : looks up name
+    PortRange ..> InvalidPortRangeException : throws
+
+    note for ScanResult "implements Comparable of ScanResult (natural order = port number)"
+    note for InvalidPortRangeException "extends Exception"

@@ -1,0 +1,86 @@
+classDiagram
+    direction TB
+
+    class Command {
+        <<interface>>
+        +getLabel() String
+        +execute() void
+    }
+
+    class BaseCommand {
+        <<abstract>>
+        #DATE_FORMAT DateTimeFormatter$
+        -label String
+        #io ConsoleIO
+        #BaseCommand(label String, io ConsoleIO)
+        +getLabel() String
+    }
+
+    class PortScanCommand {
+        -scanner PortScanner
+        -repository ReportRepository
+        -comparator ReportComparator
+        +execute() void
+    }
+
+    class HistoryCommand {
+        -repository ReportRepository
+        +execute() void
+    }
+
+    class XorCommand {
+        +execute() void
+    }
+
+    class NetworkInfoCommand {
+        -provider NetworkInfoProvider
+        +execute() void
+    }
+
+    class Menu {
+        -io ConsoleIO
+        -commands List~Command~
+        +register(command Command) void
+        +run() void
+    }
+
+    class ConsoleIO {
+        -scanner Scanner
+        -out PrintStream
+        +println(text String) void
+        +readLine(prompt String) String
+        +readInt(prompt String) int
+        +confirm(question String) boolean
+    }
+
+    class Main {
+        +main(args String[])$ void
+    }
+
+    class PortScanner
+    class ReportRepository {
+        <<interface>>
+    }
+    class ReportComparator
+    class XorCipher
+    class NetworkInfoProvider
+
+    Command <|.. BaseCommand : implements
+    BaseCommand <|-- PortScanCommand
+    BaseCommand <|-- HistoryCommand
+    BaseCommand <|-- XorCommand
+    BaseCommand <|-- NetworkInfoCommand
+
+    Menu o-- "0..*" Command : runs
+    Menu --> "1" ConsoleIO : uses
+    BaseCommand --> "1" ConsoleIO : uses
+
+    PortScanCommand --> "1" PortScanner
+    PortScanCommand --> "1" ReportRepository
+    PortScanCommand --> "1" ReportComparator
+    HistoryCommand --> "1" ReportRepository
+    XorCommand ..> XorCipher : creates
+    NetworkInfoCommand --> "1" NetworkInfoProvider
+
+    Main ..> Menu : creates and starts
+    Main ..> Command : registers

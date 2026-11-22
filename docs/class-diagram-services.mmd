@@ -1,0 +1,64 @@
+classDiagram
+    direction TB
+
+    class ReportRepository {
+        <<interface>>
+        +save(report ScanReport) void
+        +findAll() List~ScanReport~
+        +findLatestFor(target String) Optional~ScanReport~
+    }
+
+    class FileReportRepository {
+        -directory Path
+        +save(report ScanReport) void
+        +findAll() List~ScanReport~
+    }
+
+    class InMemoryReportRepository {
+        -reports List~ScanReport~
+        +save(report ScanReport) void
+        +findAll() List~ScanReport~
+    }
+
+    class PortScanner {
+        -timeoutMillis int
+        +probe(host InetAddress, port int) PortState
+        +scan(target String, range PortRange) ScanReport
+    }
+
+    class ReportComparator {
+        +compare(previous ScanReport, current ScanReport) ScanComparison
+    }
+
+    class XorCipher {
+        -key byte[]
+        +XorCipher(key String)
+        +apply(data byte[]) byte[]
+        +processFile(input Path, output Path) void
+    }
+
+    class NetworkInfoProvider {
+        +describeInterfaces() List~String~
+        +listConnections() List~String~
+        +commandFor(osName String) List~String~$
+    }
+
+    class ReportStorageException {
+        <<checked exception>>
+    }
+
+    class ScanReport
+    class ScanComparison
+    class PortRange
+
+    ReportRepository <|.. FileReportRepository : implements
+    ReportRepository <|.. InMemoryReportRepository : implements
+    ReportRepository ..> ScanReport : stores
+    ReportRepository ..> ReportStorageException : throws
+
+    PortScanner ..> PortRange : reads
+    PortScanner ..> ScanReport : creates
+    ReportComparator ..> ScanReport : reads two
+    ReportComparator ..> ScanComparison : creates
+
+    note for ReportStorageException "extends Exception"
