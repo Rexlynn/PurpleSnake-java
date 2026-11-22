@@ -1,0 +1,22 @@
+# Build output
+target/
+*.class
+
+# Local application data (saved scan reports)
+data/
+
+# IDE metadata
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and secrets
+*.log
+.env
